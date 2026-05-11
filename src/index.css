@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #ffd700;
+  --color-cyan: #00f2ff;
+  --color-violet: #8a2be2;
+  --color-crimson: #ff2d55;
+  --color-glass: rgba(255, 255, 255, 0.05);
+
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+@layer utilities {
+  .bg-arena {
+    background-color: #050508;
+    background-image: radial-gradient(circle at 50% 50%, #1a1033 0%, #050508 100%);
+  }
+  .bg-hud-top {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+  }
+  .bg-hud-bottom {
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  }
+  .glass-panel {
+    background: var(--color-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+  }
+  .gm-button {
+    background: linear-gradient(135deg, var(--color-gold), #b8860b);
+    color: #000;
+    font-weight: bold;
+    padding: 10px 24px;
+    border-radius: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .gm-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  }
+  .glow-text-cyan {
+    text-shadow: 0 0 10px var(--color-cyan);
+  }
+  .glow-text-gold {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  }
+  .glow-text-violet {
+    text-shadow: 0 0 15px var(--color-violet);
+  }
+  .glow-text-crimson {
+    text-shadow: 0 0 15px var(--color-crimson);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #050508;
+  color: #fff;
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
