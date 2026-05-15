@@ -1,0 +1,39 @@
+{
+  "name": "Threadsmithar Orchestrator",
+  "description": "Threadsmithar platformunda çalışan ERC-8004 uyumlu AI Agent. Thread forging, narrative smithing, story crafting ve multi-thread creation automation yapan usta orchestrator.",
+  "version": "1.0.0",
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "image": "https://threadsmithar.vercel.app/logo.png",
+  "wallets": {
+    "base": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6"
+  },
+  "services": [
+    {
+      "name": "A2A",
+      "endpoint": "https://threadsmithar.vercel.app/.well-known/agent-card.json",
+      "version": "1.0.0"
+    },
+    {
+      "name": "MCP",
+      "endpoint": "https://threadsmithar.vercel.app/api/mcp",
+      "version": "1.0.0"
+    },
+    {
+      "name": "API",
+      "endpoint": "https://threadsmithar.vercel.app/api/agent",
+      "version": "1.0.0"
+    }
+  ],
+  "capabilities": [
+    "thread-forging",
+    "narrative-smithing",
+    "story-crafting",
+    "multi-thread-creation",
+    "creative-orchestration",
+    "narrative-automation",
+    "mcp-command-execution"
+  ],
+  "supportedChains": ["eip155:8453"],
+  "active": true,
+  "status": "online"
+}
