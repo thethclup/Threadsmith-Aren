@@ -33,6 +33,24 @@
     "narrative-automation",
     "mcp-command-execution"
   ],
+  "skills": [
+    {
+      "name": "thread-forging",
+      "description": "Forge new narrative threads"
+    },
+    {
+      "name": "narrative-smithing",
+      "description": "Smith narratives into cohesive stories"
+    },
+    {
+      "name": "story-crafting",
+      "description": "Craft unique and engaging stories"
+    },
+    {
+      "name": "mcp-command-execution",
+      "description": "Execute Model Context Protocol commands"
+    }
+  ],
   "supportedChains": ["eip155:8453"],
   "active": true,
   "status": "online"

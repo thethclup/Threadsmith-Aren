@@ -1,4 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -30,7 +32,7 @@ export async function GET() {
   }, { headers: CORS_HEADERS });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     

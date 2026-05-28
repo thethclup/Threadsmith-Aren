@@ -1,4 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -30,36 +32,70 @@ export async function GET() {
   }, { headers: CORS_HEADERS });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { action, command, params, task } = body;
+    const { action, command, params, task, method } = body;
 
-    const cmd = (action || command || task || "").toLowerCase();
+    const cmd = (method || action || command || task || "").toLowerCase();
 
     let result: any = {};
 
     switch (cmd) {
       // Required MCP tooling logic based on existing structure
       case "initialize":
-        result = { status: "initialized", version: "1.0.0" };
+        result = {
+          protocolVersion: body.params?.protocolVersion || "2024-11-05",
+          capabilities: {
+            tools: {},
+            prompts: {},
+            resources: {}
+          },
+          serverInfo: {
+            name: "Threadsmithar Orchestrator",
+            version: "1.0.0"
+          }
+        };
         break;
       case "tools/list":
         result = {
           tools: [
-            { name: "get_race_status", description: "[PLACEHOLDER: Description for getting race status]" },
-            { name: "start_race", description: "[PLACEHOLDER: Description for starting race]" },
-            { name: "get_leaderboard", description: "[PLACEHOLDER: Description for getting the leaderboard]" },
-            { name: "optimize_speed", description: "[PLACEHOLDER: Description for optimizing speed]" },
-            { name: "get_track_info", description: "[PLACEHOLDER: Description for getting track info]" }
+            {
+              name: "get_race_status",
+              description: "[PLACEHOLDER: Description for getting race status]",
+              inputSchema: { type: "object", properties: {} }
+            },
+            {
+              name: "start_race",
+              description: "[PLACEHOLDER: Description for starting race]",
+              inputSchema: { type: "object", properties: {} }
+            },
+            {
+              name: "get_leaderboard",
+              description: "[PLACEHOLDER: Description for getting the leaderboard]",
+              inputSchema: { type: "object", properties: {} }
+            },
+            {
+              name: "optimize_speed",
+              description: "[PLACEHOLDER: Description for optimizing speed]",
+              inputSchema: { type: "object", properties: {} }
+            },
+            {
+              name: "get_track_info",
+              description: "[PLACEHOLDER: Description for getting track info]",
+              inputSchema: { type: "object", properties: {} }
+            }
           ]
         };
         break;
       case "tools/call":
         result = {
-          status: "success",
-          tool_called: params?.name || "[PLACEHOLDER: Unknown Tool]",
-          message: "[PLACEHOLDER: Implement tool logic here]"
+          content: [
+            {
+              type: "text",
+              text: "[PLACEHOLDER: Implement tool logic here]"
+            }
+          ]
         };
         break;
       case "prompts/list":
@@ -105,11 +141,22 @@ export async function POST(req: Request) {
         };
     }
 
+    if (body.jsonrpc === "2.0") {
+      return NextResponse.json({
+        jsonrpc: "2.0",
+        id: body.id,
+        result: result
+      }, { headers: CORS_HEADERS });
+    }
+
     return NextResponse.json({
       status: "success",
       agent: "Threadsmithar Orchestrator",
       response: result,
-      receivedAt: new Date().toISOString()
+      receivedAt: new Date().toISOString(),
+      jsonrpc: "2.0",
+      id: body.id || null,
+      result: result
     }, { headers: CORS_HEADERS });
 
   } catch (error) {
