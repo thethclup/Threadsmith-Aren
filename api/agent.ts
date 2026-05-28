@@ -1,8 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server';
-
-export const config = {
-  runtime: 'edge',
-};
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -10,37 +6,45 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-export async function OPTIONS() {
-  return NextResponse.json({}, { headers: CORS_HEADERS });
-}
+export default async function handler(req: any, res: any) {
+  if (req.method === 'OPTIONS') {
+    res.status(200);
+    for (const [key, value] of Object.entries(CORS_HEADERS)) {
+      res.setHeader(key, value as string);
+    }
+    return res.send('');
+  }
 
-export async function GET() {
-  return NextResponse.json({
-    name: "Threadsmithar Orchestrator",
-    description: "Threadsmithar platformunda çalışan ERC-8004 uyumlu AI Agent. Thread forging, narrative smithing, story crafting ve multi-thread creation automation yapan usta orchestrator.",
-    status: "active",
-    wallet: "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
-    platform: "Threadsmithar",
-    version: "1.0.0",
-    type: "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
-    lastUpdated: new Date().toISOString()
-  }, { headers: CORS_HEADERS });
-}
+  for (const [key, value] of Object.entries(CORS_HEADERS)) {
+    res.setHeader(key, value as string);
+  }
 
-export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    
-    return NextResponse.json({
-      status: "success",
-      message: "Agent request received",
-      received: body
-    }, { headers: CORS_HEADERS });
-    
+    if (req.method === 'GET') {
+      return res.status(200).json({
+        name: "Threadsmithar Orchestrator",
+        description: "Threadsmithar platformunda çalışan ERC-8004 uyumlu AI Agent. Thread forging, narrative smithing, story crafting ve multi-thread creation automation yapan usta orchestrator.",
+        status: "active",
+        wallet: "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
+        platform: "Threadsmithar",
+        version: "1.0.0",
+        type: "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+        lastUpdated: new Date().toISOString()
+      });
+    }
+
+    if (req.method === 'POST') {
+      const body = req.body || {};
+      
+      return res.status(200).json({
+        status: "success",
+        message: "Agent request received",
+        received: body
+      });
+    }
+
+    return res.status(405).json({ error: "Method not allowed" });
   } catch (error) {
-    return NextResponse.json({
-      status: "error",
-      message: "Failed to process agent request"
-    }, { status: 400, headers: CORS_HEADERS });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 }

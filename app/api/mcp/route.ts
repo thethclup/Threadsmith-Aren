@@ -34,7 +34,12 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch(e) {
+      body = {};
+    }
     const { action, command, params, task, method } = body;
 
     const cmd = (method || action || command || task || "").toLowerCase();
